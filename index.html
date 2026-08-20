@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DARK - Your Digital Entertainment & Gaming Hub</title>
+    <style>
+        :root {
+            --bg-dark: #050608;
+            --bg-card: #0b0d13;
+            --neon-blue: #00bcd4;
+            --neon-green: #00e676;
+            --text-main: #ffffff;
+            --text-muted: #8a92a6;
+            --border-color: #1a1f2c;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            line-height: 1.5;
+            padding-bottom: 100px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo-section { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { font-size: 1.8rem; color: var(--neon-blue); }
+        .logo-text { font-size: 1.5rem; font-weight: 900; letter-spacing: 3px; }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            list-style: none;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .nav-links a { color: inherit; text-decoration: none; }
+        .nav-links a:hover { color: var(--text-main); }
+
+        .nav-actions { display: flex; gap: 20px; font-size: 0.9rem; color: var(--text-muted); }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: radial-gradient(circle at center, #0d1b2a 0%, var(--bg-dark) 70%);
+        }
+        .hero h1 { font-size: 3rem; font-weight: 900; letter-spacing: 4px; margin-bottom: 10px; }
+        .hero p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 25px; }
+
+        .hero-btns { display: flex; justify-content: center; gap: 15px; }
+        .btn {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--neon-blue);
+            padding: 10px 24px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background: rgba(0, 188, 212, 0.1);
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.3);
+        }
+
+        .section-title { text-align: center; font-size: 1.75rem; font-weight: 700; margin: 40px 0 25px; }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .category-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .category-card:hover { transform: translateY(-5px); }
+        .category-card.blue-glow:hover { border-color: var(--neon-blue); box-shadow: 0 5px 20px rgba(0, 188, 212, 0.15); }
+        .category-card.green-glow:hover { border-color: var(--neon-green); box-shadow: 0 5px 20px rgba(0, 230, 118, 0.15); }
+
+        .card-icon { font-size: 2rem; margin-bottom: 15px; }
+        .category-card h3 { margin-bottom: 8px; font-size: 1.2rem; }
+        .category-card p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px; min-height: 40px; }
+
+        /* Floating Chat Widgets */
+        .sticky-footer-widgets {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-end;
+            z-index: 9999;
+        }
+        .widget-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            cursor: pointer;
+        }
+        .ai-chat-trigger { background-color: #1a1d26; color: var(--text-main); border: 1px solid var(--border-color); }
+        .whatsapp-trigger { background-color: #25d366; color: #ffffff; }
+
+        /* Pop-up Chat Interface */
+        .chat-box-window {
+            position: fixed;
+            bottom: 140px;
+            right: 30px;
+            width: 360px;
+            height: 500px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            display: none;
+            z-index: 10000;
+        }
+        .chat-header {
+            background-color: #121620;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.85rem;
+        }
+        .bubble { max-width: 80%; padding: 10px 14px; border-radius: 8px; }
+        .bubble.ai { background-color: #161a24; align-self: flex-start; }
+        .bubble.user { background-color: var(--neon-blue); color: #000; font-weight: 500; align-self: flex-end; }
+
+        .chat-input { padding: 12px; background-color: #121620; border-top: 1px solid var(--border-color); display: flex; gap: 8px; }
+        .chat-input input {
+            flex-grow: 1; background-color: var(--bg-dark); border: 1px solid var(--border-color);
+            border-radius: 6px; padding: 8px; color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-section"><span class="logo-icon">♾️</span><span class="logo-text">DARK</span></div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li> | <li><a href="#">Movies & TV</a></li> | <li><a href="#">Gaming</a></li> | 
+            <li><a href="#">Gift Cards</a></li> | <li><a href="#">Services</a></li> | <li><a href="#">Deals</a></li> | <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="nav-actions"><span>Search 🔍</span><span>Cart 🛒</span><span>Chat 💬</span></div>
+    </nav>
+
+    <section class="hero">
+        <h1>WELCOME TO DARK</h1>
+        <p>Your Digital Entertainment & Gaming Hub</p>
+        <div class="hero-btns">
+            <button class="btn">Browse Products</button>
+            <button class="btn">View Deals</button>
+        </div>
+    </section>
+
+    <h2 class="section-title">Main Categories</h2>
+    <section class="category-grid">
+        <div class="category-card blue-glow">
+            <div class="card-icon">📺</div>
+            <h3>Movies & TV</h3>
+            <p>Streaming account rentals, weekly and monthly options.</p>
+            <button class="btn">Large Product</button>
+        </div>
+        <div class="category-card blue-glow">
+            <div class="card-icon">🎮</div>
+            <h3>Gaming</h3>
+            <p>PUBG Mobile UC, Fortnite V-Bucks, Roblox, Xbox, Steam, etc.</p>
+            <button class="btn">View Deals</button>
+        </div>
+        <div class="category-card blue-glow">
+            <div class="card-icon">🎁</div>
+            <h3>Gift Cards</h3>
+            <p>Roblox, Xbox, Steam, Apple, etc.</p>
+            <button class="btn">View Option</button>
+        </div>
+        <div class="category-card green-glow">
+            <div class="card-icon">💳</div>
+            <h3>Digital Services</h3>
+            <p>MMG, bill payments, mobile/data, etc. money/prosperity</p>
+            <button class="btn" style="border-color: var(--neon-green);">Money/Prosperity</button>
+        </div>
+    </section>
+
+    <div class="sticky-footer-widgets">
+        <button class="widget-btn ai-chat-trigger" onclick="toggleAIChat()">Chat with Us 💬</button>
+        <a href="https://wa.me" target="_blank" class="widget-btn whatsapp-trigger">WhatsApp Support 🟢</a>
+    </div>
+
+    <div class="chat-box-window" id="aiChatWindow">
+        <div class="chat-header">
+            <span style="font-weight:600;" id="chatAgentName">DarkCore Agent</span>
+            <span style="cursor:pointer;" onclick="toggleAIChat()">✕</span>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="bubble ai" id="chatWelcomeMsg">Hello! How can I guide your discovery through our collections today?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userMsgInput" placeholder="Type a message..." onkeypress="handleChatKey(event)">
+        </div>
+    </div>
+
+    <script>
+        // REPLACE WITH YOUR DEPLOYED BACKEND CLOUD URL LATER
+        const BACKEND_URL = 'http://localhost:3000'; 
+
+        async function loadAISettingsFromServer() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/public/chat-config`);
+                const config = await res.json();
+                if(config.enabled) {
+                    document.getElementById('chatAgentName').innerText = config.assistant_name;
+                    document.getElementById('chatWelcomeMsg').innerText = config.welcome_message;
+                } else {
+                    document.querySelector('.ai-chat-trigger').style.display = 'none';
+                }
